@@ -257,7 +257,7 @@ def create_app(test_config=None):
             "message": "resource not found"
         }), 404
     @app.errorhandler(AuthError)
-    def AuthError(error):
+    def auth_error(error):
         return jsonify({
             "success": False,
             "error": error.status_code,
@@ -269,7 +269,7 @@ def create_app(test_config=None):
 
 
 
-app = create_app()
+APP = create_app()
 
 
 
@@ -281,4 +281,4 @@ app = create_app()
 
 # Local use:
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    APP.run(host='127.0.0.1', port=8080, debug=True)

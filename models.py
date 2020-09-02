@@ -2,6 +2,7 @@ import os
 from sqlalchemy import Column, String, Integer, Date
 from flask_sqlalchemy import SQLAlchemy
 import json
+import datetime
 
 
 database_path = 'postgres://yarasaleh@localhost:5432/agency'
@@ -61,7 +62,7 @@ class Movies(db.Model):
 
     id = Column(Integer(),primary_key=True)
     title  = Column(String(180),nullable=False, unique=True)
-    releaseDate = Column(DateTime(),default=datetime.datetime.utcnow)
+    releaseDate = Column(db.DateTime(),default=datetime.datetime.utcnow)
     actors = db.relationship('Actors', backref='movies', lazy=True,cascade='all, delete-orphan')
 
     def movie_dict(self):
