@@ -14,13 +14,13 @@ Users can be a Casting Assistant , a Casting Director or Executive Producer. An 
 permissions/roles  | Casting Assistant | Casting Director | Executive Producer
 ------------- | ------------- | ------------- | -------------
 get:all_movies  | :white_check_mark: | :white_check_mark: |:white_check_mark: 
-post:movies  |  | | :white_check_mark:
-patch:movies  |  | :white_check_mark:|:white_check_mark: 
-delete:movies  |  | | :white_check_mark:
+post:movie  |  | | :white_check_mark:
+patch:movie  |  | :white_check_mark:|:white_check_mark: 
+delete:movie  |  | | :white_check_mark:
 get:all_actors  | :white_check_mark: | :white_check_mark: | :white_check_mark:
-post:actors  |   |:white_check_mark: |:white_check_mark:
-patch:actors  |   | :white_check_mark:|:white_check_mark:
-delete:actors  |   |:white_check_mark: |:white_check_mark:
+post:actor  |   |:white_check_mark: |:white_check_mark:
+patch:actor  |   | :white_check_mark:|:white_check_mark:
+delete:actor  |   |:white_check_mark: |:white_check_mark:
 
 
 ### Endpoints
