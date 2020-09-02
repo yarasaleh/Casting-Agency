@@ -21,6 +21,18 @@ def create_app(test_config=None):
     setup_db(app)
     CORS(app)
 
+    @app.after_request
+    def after_request(response):
+        response.headers.add(
+            'Access-Control-Allow-Origin', '*')
+        response.headers.add(
+            'Access-Control-Allow-Headers',
+            'Content-Type, Authorization, true')
+        response.headers.add(
+            'Access-Control-Allow-Methods',
+            'GET, POST, DELETE, OPTIONS')
+        return response
+
 
 
     '''
@@ -257,12 +269,16 @@ def create_app(test_config=None):
 
 
 
-
-
-
-
-
 app = create_app()
 
+
+
+
+# For Hyroku use:
+# #  run the app and specify port manually:
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0',port=8080,debug=True)
+
+# Local use:
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True)
