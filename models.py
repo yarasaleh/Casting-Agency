@@ -60,8 +60,9 @@ class Movies(db.Model):
     __tablename__ = 'movies'
 
     id = Column(Integer(),primary_key=True)
-    title  = Column(String(180),nullable=False)
+    title  = Column(String(180),nullable=False, unique=True)
     releaseDate = Column(DateTime(),default=datetime.datetime.utcnow)
+    actors = db.relationship('Actors', backref='movies', lazy=True,cascade='all, delete-orphan')
 
     def movie_dict(self):
         return {
@@ -102,13 +103,15 @@ class Actors(db.Model):
     name  = Column(String(180),nullable=False)
     Age = Column(Integer(), nullable=False)
     gender = Column(String(10),nullable=False)
+    movie_id = db.Column(Integer() , db.ForeignKey('movies.id'))
 
     def actor_dict(self):
         return {
             'id' : self.id,
             'title' : self.name,
             'age': self.age,
-            'gender' : self.gender
+            'gender' : self.gender,
+            'movie_id': self.movie_id
         }
 
     def insert(self):

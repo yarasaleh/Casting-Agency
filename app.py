@@ -160,7 +160,8 @@ def create_app(test_config=None):
                 id = body.get('id'),
                 name = body.get('name'),
                 age = body.get('age'),
-                gender = body.get('gender')
+                gender = body.get('gender'),
+                movie_id = body.get('movie_id')
             )
 
             new_actor.insert()
@@ -185,11 +186,14 @@ def create_app(test_config=None):
             body = request.get_json()
             name_update = body.get('name')
             age_update = body.get('age')
+            movie_update = body.get('movie_id')
 
             if(name_update):
                 actor.name = name_update
             if(age_update):
                 actor.age = age_update
+            if(movie_update):
+                actor.movie_id = movie_update
 
             actor.update()
             return jsonify({
