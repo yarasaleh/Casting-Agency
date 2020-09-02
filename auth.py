@@ -6,7 +6,7 @@ from urllib.request import urlopen
 
 
 
-AUTH0_DOMAIN = 'udacity-full-stack.us.auth0.com'
+AUTH0_DOMAIN = 'full-stack-project.us.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'agency'
 
