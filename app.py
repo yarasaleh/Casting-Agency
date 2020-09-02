@@ -47,6 +47,9 @@ def create_app(test_config=None):
     # ROUTES.
     #----------------------------------------------------------------------------#
 
+    @app.route('/')
+    def index():
+        return 'Hi!!'
 
 
     #  Movies
