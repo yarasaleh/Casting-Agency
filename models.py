@@ -109,7 +109,7 @@ class Actors(db.Model):
     def actor_dict(self):
         return {
             'id' : self.id,
-            'title' : self.name,
+            'name' : self.name,
             'age': self.age,
             'gender' : self.gender,
             'movie_id': self.movie_id
