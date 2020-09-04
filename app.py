@@ -13,6 +13,7 @@ from auth import AuthError, requires_auth
 
 
 
+
 def create_app(test_config=None):
     #----------------------------------------------------------------------------#
     # App Config.
@@ -30,7 +31,7 @@ def create_app(test_config=None):
             'Content-Type, Authorization, true')
         response.headers.add(
             'Access-Control-Allow-Methods',
-            'GET, POST, DELETE, OPTIONS')
+            'GET, POST, DELETE, PATCH')
         return response
 
 
