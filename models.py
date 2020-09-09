@@ -5,7 +5,7 @@ import json
 import datetime
 
 
-database_path = 'postgres://yarasaleh@localhost:5432/agency'
+database_path = 'postgresql://yarasaleh@localhost:5432/agency'
 db = SQLAlchemy()
 
 
@@ -14,11 +14,12 @@ db = SQLAlchemy()
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
-def setup_db(app):
+def setup_db(app, database_path = database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+
 
 
 '''
@@ -76,12 +77,19 @@ class Movies(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
     def update(self):
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+    def rollback(self):
+        db.session.rollback()
+
+    def close(self):
+        db.session.close()
 
     def __repr__(self):
         return json.dumps(self.movie_dict())
@@ -110,7 +118,7 @@ class Actors(db.Model):
         return {
             'id' : self.id,
             'name' : self.name,
-            'age': self.age,
+            'Age': self.Age,
             'gender' : self.gender,
             'movie_id': self.movie_id
         }

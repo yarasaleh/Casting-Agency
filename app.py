@@ -6,9 +6,10 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import json
-# import sys
+import sys
 
 from models import db_drop_and_create_all, setup_db, Movies, Actors
+
 from auth import AuthError, requires_auth
 
 
@@ -31,7 +32,7 @@ def create_app(test_config=None):
             'Content-Type, Authorization, true')
         response.headers.add(
             'Access-Control-Allow-Methods',
-            'GET, POST, DELETE, PATCH')
+            'GET, POST, DELETE, PATCH, OPTIONS')
         return response
 
 
@@ -43,6 +44,19 @@ def create_app(test_config=None):
     '''
     # db_drop_and_create_all()
 
+    def get_movies_list():
+        movies_list = []
+        movies = Movies.query.all()
+        for movie in movies:
+            movies_list.append(movie.movie_dict())
+        return movies_list
+
+    def get_actors_list():
+        actors_list = []
+        actors = Actors.query.all()
+        for actor in actors:
+            actors_list.append(actor.actor_dict())
+        return actors_list
 
     #----------------------------------------------------------------------------#
     # ROUTES.
@@ -59,10 +73,10 @@ def create_app(test_config=None):
     @requires_auth('get:all_movies')
     def get_movies(payload):
         try:
-            movies = Movies.query.all()
-            movies_list = []
-            for movie in movies:
-                movies_list.append(movie.movie_dict())
+            movies_list = get_movies_list()
+            if(len(movies_list) == 0):
+                abort(404)
+
 
             return jsonify({
                 "success": True,
@@ -78,13 +92,10 @@ def create_app(test_config=None):
     def add_movie(payload):
         try:
             body = request.get_json()
-            if(body is None):
-                abort(404)
-
             new_movie = Movies(
-                id = body.get('id'),
-                title = body.get('title'),
-                releaseDate = body.get('releaseDate')
+                id = body.get("id"),
+                title = body.get("title"),
+                releaseDate = body.get("releaseDate")
             )
 
             new_movie.insert()
@@ -94,7 +105,11 @@ def create_app(test_config=None):
                 "movie": [movie.movie_dict()]
             })
         except:
+            # print("Movie: --------------------")
+            # print(sys.exc_info())
             abort(422)
+
+
 
 
 
@@ -104,8 +119,7 @@ def create_app(test_config=None):
     def update_movie(payload,id):
         try:
             movie = Movies.query.filter_by(id=id).one_or_none()
-            if(movie is None):
-                abort(404)
+
 
             body = request.get_json()
             title_update = body.get('title')
@@ -122,7 +136,12 @@ def create_app(test_config=None):
                 "movie": [movie.movie_dict()]
             })
         except:
-            abort(422)
+            # print("Movie -----------------------------------")
+            # print(sys.exc_info())
+            if(movie is None):
+                abort(404)
+            else:
+                abort(422)
 
 
 
@@ -131,8 +150,9 @@ def create_app(test_config=None):
     def remove_movie(payload,id):
         try:
             movie = Movies.query.filter_by(id=id).one_or_none()
-            if(movie is None):
-                abort(404)
+            # if(movie is None):
+            #     print("test1111")
+            #     abort(404)
 
             movie.delete()
 
@@ -141,7 +161,9 @@ def create_app(test_config=None):
                 "deleted_movie": id
             })
         except:
-            abort(422)
+            # print("Movie -----------------------------------")
+            # print(sys.exc_info())
+            abort(404)
 
 
     #  Actors
@@ -150,10 +172,9 @@ def create_app(test_config=None):
     @requires_auth('get:all_actors')
     def get_actors(payload):
         try:
-            actors = Actors.query.all()
-            actors_list = []
-            for actor in actors:
-                actors_list.append(actor.actor_dict())
+            actors_list = get_actors_list()
+            if(len(actors_list) == 0):
+                abort(404)
 
             return jsonify({
                 "success": True,
@@ -169,15 +190,12 @@ def create_app(test_config=None):
     def add_actor(payload):
         try:
             body = request.get_json()
-            if(body is None):
-                abort(404)
-
             new_actor = Actors(
-                id = body.get('id'),
-                name = body.get('name'),
-                age = body.get('age'),
-                gender = body.get('gender'),
-                movie_id = body.get('movie_id')
+                id = body.get("id"),
+                name = body.get("name"),
+                Age = body.get("Age"),
+                gender = body.get("gender"),
+                movie_id = body.get("movie_id")
             )
 
             new_actor.insert()
@@ -187,6 +205,8 @@ def create_app(test_config=None):
                 "actor": [actor.actor_dict()]
             })
         except:
+            # print("Actor: --------------------")
+            # print(sys.exc_info())
             abort(422)
 
 
@@ -196,18 +216,17 @@ def create_app(test_config=None):
     def update_actor(payload,id):
         try:
             actor = Actors.query.filter_by(id=id).one_or_none()
-            if(actor is None):
-                abort(404)
+
 
             body = request.get_json()
-            name_update = body.get('name')
-            age_update = body.get('age')
-            movie_update = body.get('movie_id')
+            name_update = body.get("name")
+            age_update = body.get("Age")
+            movie_update = body.get("movie_id")
 
             if(name_update):
                 actor.name = name_update
             if(age_update):
-                actor.age = age_update
+                actor.Age = age_update
             if(movie_update):
                 actor.movie_id = movie_update
 
@@ -217,7 +236,12 @@ def create_app(test_config=None):
                 "actor": [actor.actor_dict()]
             })
         except:
-            abort(422)
+            # print("Actor: --------------------")
+            # print(sys.exc_info())
+            if(actor is None):
+                abort(404)
+            else:
+                abort(422)
 
 
 
@@ -228,8 +252,6 @@ def create_app(test_config=None):
         try:
             actor = Actors.query.filter_by(id=id).one_or_none()
             name = str(actor.name)
-            if(actor is None):
-                abort(404)
 
             actor.delete()
 
@@ -238,7 +260,9 @@ def create_app(test_config=None):
                 "deleted_actor": name
             })
         except:
-            abort(422)
+            # print("Actor -----------------------------------")
+            # print(sys.exc_info())
+            abort(404)
 
 
 
