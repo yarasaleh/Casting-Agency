@@ -1,0 +1,37 @@
+movie = {
+    "id": 1 ,
+    "title" : "Shutter Island",
+    "releaseDate": "2010-09-13T23:09:00Z"
+}
+movie = {
+    "id": 2 ,
+    "title" : "Lawrence of Arabia",
+    "releaseDate": "1962-12-10T23:09:00Z"
+}
+movie = {
+    "id": 3 ,
+    "title" : "Super Dark Times",
+    "releaseDate": "2017-09-29T23:09:00Z"
+}
+
+actor = {
+    "id" : 1,
+    "name" : 'Leonardo DiCaprio',
+    "Age": 45,
+    "gender" : 'Male',
+    "movie_id": 1
+}
+actor = {
+    "id" : 2,
+    "name" : 'Omar Sharif',
+    "Age": 68,
+    "gender" : 'Male',
+    "movie_id": 2
+}
+actor = {
+    "id" : 3,
+    "name" : 'Charlie Tahan',
+    "Age": 22,
+    "gender" : 'Male',
+    "movie_id": 3
+}
