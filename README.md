@@ -1,12 +1,13 @@
 # Casting Agency
 ## About
-This API models a company that is responsible for creating movies and managing and assigning actors to those movies.
+This API models a company that is responsible for creating movies and managing and assigning actors to those movies. 
+- https://aw-casting-agency-api.herokuapp.com/
 ## API
 In order to use the API users need to be authenticated. 
 Users can be a Casting Assistant , a Casting Director or Executive Producer. An overview of the API can be found below as well. 
 ### Models 
-- **Movies** with attributes [title - release date]
-- **Actors** with attributes [name - age - gender]
+- **Movies** with attributes [id - title - releaseDate]
+- **Actors** with attributes [id - name - age - gender - movie_id]
 
 
 ### Roles and Permissions 
@@ -24,7 +25,69 @@ delete:actor  |   |:white_check_mark: |:white_check_mark:
 
 
 ### Endpoints
-soon..:clock130:
+#### GET /all_movies
+  * Returns a list of avaliable movies objects and success value.
+  ```
+  curl -X GET https://aw-casting-agency-api.herokuapp.com/all_movies \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>'
+  ```
+#### POST /movie
+  * Requires id , title and release Date.
+  * Returns a list of new posted movie object and success value.
+  ```
+  curl -X POST https://aw-casting-agency-api.herokuapp.com/movie \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>' \
+   -H 'Content-Type: application/json' \
+   -d '{"id": 1 ,
+    "title" : "Shutter Island",
+    "releaseDate": "2010-09-13T23:09:00Z"
+    }'
+  ```
+#### PATCH /movie/<int:id>
+  * Returns a list of new edited movie object and success value.
+  ```
+  curl -X PATCH https://aw-casting-agency-api.herokuapp.com/movie/<int:id> \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>' \
+   -H 'Content-Type: application/json' \
+  ```
+#### DELETE /movie/<int:id>
+  Returns the id of the deleted movie object and success value.
+  ```
+  curl -X DELETE https://aw-casting-agency-api.herokuapp.com/movie/<int:id> \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>'
+  ```
+#### GET /all_actors
+  * Returns a list of avaliable actors objects and success value.
+  ```
+  curl -X GET https://aw-casting-agency-api.herokuapp.com/all_actors \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>'
+  ```
+#### POST /actor
+  * Requires id , name, age, gender and movie id that the actor participated in.
+  * Returns a list of the new posted actor object and success value.
+  ```
+  curl -X POST https://aw-casting-agency-api.herokuapp.com/actor \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>' \
+   -H 'Content-Type: application/json' \
+   -d '{"id" : 1,
+    "name" : 'Leonardo DiCaprio',
+    "Age": 45,
+    "gender" : 'Male',
+    "movie_id": 1}'
+  ```
+#### PATCH /actor/<int:id>
+  * Returns a list of the edited actor object and success value.
+  ```
+  curl -X PATCH https://aw-casting-agency-api.herokuapp.com/actor/<int:id> \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>' \
+   -H 'Content-Type: application/json' \
+  ```
+#### DELETE /actor/<int:id>
+  * Returns the id of the deleted actor object and success value.
+  ```
+  curl -X DELETE https://aw-casting-agency-api.herokuapp.com/actor/<int:id> \
+   -H 'Authorization: Bearer <INSERT_YOUR_TOKEN>'
+  ```
 
 
 ## :arrow_down: Installation
@@ -52,7 +115,11 @@ To run the server, execute:
 flask run 
 ```
 ## :construction: Testing
-soon..:clock130:
+To test the API, first create a test database in postgres and then execute the tests as follows:
+```
+createdb agency_test
+python3 test_app.py
+```
 
 
 
