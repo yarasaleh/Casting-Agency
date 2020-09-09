@@ -30,7 +30,8 @@ class AgencyTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = create_app()
         self.client = self.app.test_client()
-        self.database_path = 'postgresql://yarasaleh@localhost:5432/agency_test'
+        # self.database_path = 'postgresql://yarasaleh@localhost:5432/agency_test'
+        self.database_path = 'postgres://kawllcxtaiesjg:61c716b63b42933fb4cc0532a95f8c36be303a5e86b0bd739743085c20cf9ce9@ec2-3-95-87-221.compute-1.amazonaws.com:5432/dfrem3rdb4t99'
         setup_db(self.app, self.database_path)
 
         self.headers_Casting_Assistant = {'Content-Type': 'application/json', 'Authorization': Casting_Assistant_Token}
