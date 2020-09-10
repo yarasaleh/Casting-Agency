@@ -5,9 +5,9 @@ from jose import jwt
 from urllib.request import urlopen
 import os
 
-AUTH0_DOMAIN = 'full-stack-project.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'agency'
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN', auth0_config['AUTH0_DOMAIN'])
+ALGORITHMS =  os.environ.get('ALGORITHMS', auth0_config['ALGORITHMS'])
+API_AUDIENCE = os.environ.get('API_AUDIENCE', auth0_config['API_AUDIENCE'])
 
 # AuthError Exception
 '''
@@ -89,8 +89,6 @@ def check_permissions(permission, payload):
         it should decode the payload from the token
         it should validate the claims
         return the decoded payload
-        !!NOTE urlopen has a common certificate error described
-        here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
 
 
