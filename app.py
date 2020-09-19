@@ -223,7 +223,7 @@ def create_app(test_config=None):
             "success": False,
             "error": 422,
             "message": "unprocessable",
-            "description": error
+            "description": error.error
         }), 422
 
     @app.errorhandler(404)
