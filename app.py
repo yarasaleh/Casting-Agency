@@ -87,6 +87,7 @@ def create_app(test_config=None):
             })
         except Exception:
             abort(422)
+            print(sys.exc_info())
 
     @app.route('/movie/<int:id>', methods=['PATCH'])
     @requires_auth('patch:movie')
@@ -221,7 +222,8 @@ def create_app(test_config=None):
         return jsonify({
             "success": False,
             "error": 422,
-            "message": "unprocessable"
+            "message": "unprocessable",
+            "description": error
         }), 422
 
     @app.errorhandler(404)
@@ -256,3 +258,4 @@ APP = create_app()
 #  run the app and specify port manually:
 if __name__ == '__main__':
     APP.run(host='0.0.0.0', port=8080, debug=True)
+    # APP.run(host='127.0.0.1', port=5000, debug=True)
