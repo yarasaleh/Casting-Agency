@@ -6,8 +6,8 @@ This API models a company that is responsible for creating movies and managing a
 In order to use the API users need to be authenticated. 
 Users can be a Casting Assistant , a Casting Director or Executive Producer. An overview of the API can be found below as well. 
 ### Models 
-- **Movies** with attributes [id - title - releaseDate]
-- **Actors** with attributes [id - name - age - gender - movie_id]
+- **Movies** with attributes [id - title - releaseDate - image_link]
+- **Actors** with attributes [id - name - age - gender - image_link - movie_id]
 
 
 ### Roles and Permissions 
@@ -40,7 +40,8 @@ delete:actor  |   |:white_check_mark: |:white_check_mark:
    -H 'Content-Type: application/json' \
    -d '{"id": 1 ,
     "title" : "Shutter Island",
-    "releaseDate": "2010-09-13T23:09:00Z"
+    "releaseDate": "2010-09-13T23:09:00Z",
+    "image_link": "https://images-na.ssl-images-amazon.com/images/I/51MsI8xR-NL._AC_.jpg"
     }'
   ```
 #### PATCH /movie/<int:id>
@@ -73,7 +74,9 @@ delete:actor  |   |:white_check_mark: |:white_check_mark:
     "name" : 'Leonardo DiCaprio',
     "Age": 45,
     "gender" : 'Male',
-    "movie_id": 1}'
+    "movie_id": 1,
+    "image_link": "https://d17zbv0kd7tyek.cloudfront.net/wp-content/uploads/2015/06/leonardo-dicaprio-fb.jpg"
+    }'
   ```
 #### PATCH /actor/<int:id>
   * Returns a list of the edited actor object and success value.
