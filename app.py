@@ -34,10 +34,21 @@ def create_app(test_config=None):
     '''
     # db_drop_and_create_all()
 
-    def get_movies_list():
+    # pagination for each page 12 items
+    ITEM_PER_PAGE = 12
+    def paginate_items(request , selection):
+        page = request.args.get('page', 1, type=int)
+        start = (page - 1 ) * ITEM_PER_PAGE
+        end = start + ITEM_PER_PAGE
+        items = [movie.movie_dict() for item in selection]
+        current_items = items[start:end]
+
+        return current_items
+
+
+    def get_movies_list(selection):
         movies_list = []
-        movies = Movies.query.all()
-        for movie in movies:
+        for movie in selection:
             movies_list.append(movie.movie_dict())
         return movies_list
 
@@ -58,7 +69,8 @@ def create_app(test_config=None):
     @requires_auth('get:all_movies')
     def get_movies(payload):
         try:
-            movies_list = get_movies_list()
+            selection = Movies.query.order_by(Movies.id).all()
+            movies_list = paginate_items(request,selection)
             if(len(movies_list) == 0):
                 abort(404)
             return jsonify({
@@ -257,4 +269,4 @@ APP = create_app()
 #  run the app and specify port manually:
 if __name__ == '__main__':
     APP.run(host='0.0.0.0', port=8080, debug=True)
-    # APP.run(host='127.0.0.1', port=5000, debug=True)
+    # APP.run(host='127.0.0.1', port=8080, debug=True)
