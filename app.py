@@ -156,7 +156,7 @@ def create_app(test_config=None):
                 name=body.get("name"),
                 Age=body.get("Age"),
                 gender=body.get("gender"),
-                image_link=body.get("image_link").
+                image_link=body.get("image_link"),
                 movie_id=body.get("movie_id")
             )
             new_actor.insert()
