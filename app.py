@@ -75,7 +75,8 @@ def create_app(test_config=None):
             new_movie = Movies(
                 id=body.get("id"),
                 title=body.get("title"),
-                releaseDate=body.get("releaseDate")
+                releaseDate=body.get("releaseDate"),
+                image_link=body.get("image_link")
             )
 
             new_movie.insert()
@@ -95,11 +96,14 @@ def create_app(test_config=None):
             body = request.get_json()
             title_update = body.get('title')
             releaseDate_update = body.get('releaseDate')
+            image_link_update=body.get("image_link")
 
             if(title_update):
                 movie.title = title_update
             if(releaseDate_update):
                 movie.releaseDate = releaseDate_update
+            if(image_link_update):
+                movie.image_link = image_link_update
 
             movie.update()
             return jsonify({
@@ -152,6 +156,7 @@ def create_app(test_config=None):
                 name=body.get("name"),
                 Age=body.get("Age"),
                 gender=body.get("gender"),
+                image_link=body.get("image_link").
                 movie_id=body.get("movie_id")
             )
             new_actor.insert()
@@ -171,6 +176,7 @@ def create_app(test_config=None):
             body = request.get_json()
             name_update = body.get("name")
             age_update = body.get("Age")
+            image_link_update=body.get("image_link")
             movie_update = body.get("movie_id")
 
             if(name_update):
@@ -179,6 +185,8 @@ def create_app(test_config=None):
                 actor.Age = age_update
             if(movie_update):
                 actor.movie_id = movie_update
+            if(image_link_update):
+                actor.image_link = image_link_update
 
             actor.update()
             return jsonify({
