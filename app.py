@@ -35,15 +35,25 @@ def create_app(test_config=None):
     # db_drop_and_create_all()
 
     # pagination for each page 12 items
-    # ITEM_PER_PAGE = 12
-    # def paginate_items(request , selection):
-    #     page = request.args.get('page', 1, type=int)
-    #     start = (page - 1 ) * ITEM_PER_PAGE
-    #     end = start + ITEM_PER_PAGE
-    #     items = [movie.movie_dict() for item in selection]
-    #     current_items = items[start:end]
+    ITEM_PER_PAGE = 12
 
-    #     return current_items
+    def paginate_items_movies(request, selection):
+        page = request.args.get('page', 1, type=int)
+        start = (page - 1) * ITEM_PER_PAGE
+        end = start + ITEM_PER_PAGE
+        items = [item.movie_dict() for item in selection]
+        current_items = items[start:end]
+
+        return current_items
+
+    def paginate_items_actors(request, selection):
+        page = request.args.get('page', 1, type=int)
+        start = (page - 1) * ITEM_PER_PAGE
+        end = start + ITEM_PER_PAGE
+        items = [item.actor_dict() for item in selection]
+        current_items = items[start:end]
+
+        return current_items
 
     def get_movies_list():
         movies_list = []
@@ -69,8 +79,9 @@ def create_app(test_config=None):
     @requires_auth('get:all_movies')
     def get_movies(payload):
         try:
-            movies_list = get_movies_list()
-            # movies_list = paginate_items(request,selection)
+            # movies_list = get_movies_list()
+            selection = Movies.query.all()
+            movies_list = paginate_items_movies(request, selection)
             if(len(movies_list) == 0):
                 abort(404)
             return jsonify({
@@ -149,7 +160,9 @@ def create_app(test_config=None):
     @requires_auth('get:all_actors')
     def get_actors(payload):
         try:
-            actors_list = get_actors_list()
+            # actors_list = get_actors_list()
+            selection = Actors.query.all()
+            actors_list = paginate_items_actors(request, selection)
             if(len(actors_list) == 0):
                 abort(404)
 
@@ -234,7 +247,6 @@ def create_app(test_config=None):
         try:
             body = request.get_json(force=True)
             search_term = '%{}%'.format(body.get('search_term'))
-            print(search_term)
             data = []
             counter = 0
             found_data = Movies.query.filter(
@@ -245,23 +257,26 @@ def create_app(test_config=None):
 
             return jsonify({"success": True, "count": counter, "data": data})
         except:
-            abort(400)
+            abort(404)
             print(sys.exc_info())
 
     @app.route('/actor/search', methods=['POST', 'GET'])
     @requires_auth('get:all_actors')
     def search_actors(payload):
-        body = request.get_json(force=True)
-        search_term = '%{}%'.format(body.get('search_term'))
-        data = []
-        counter = 0
-        found_data = Actors.query.filter(
-            Actors.name.like(f'%{search_term}%')).all()
-        for obj in found_data:
-            counter += 1
-            data.append(obj.actor_dict())
+        try:
+            body = request.get_json(force=True)
+            search_term = '%{}%'.format(body.get('search_term'))
+            data = []
+            counter = 0
+            found_data = Actors.query.filter(
+                Actors.name.like(f'%{search_term}%')).all()
+            for obj in found_data:
+                counter += 1
+                data.append(obj.actor_dict())
 
-        return jsonify({"success": True, "count": counter, "data": data})
+            return jsonify({"success": True, "count": counter, "data": data})
+        except:
+            abort(404)
 
     # ERROR HANDLING.
     @app.errorhandler(422)
