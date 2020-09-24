@@ -45,7 +45,6 @@ def create_app(test_config=None):
 
     #     return current_items
 
-
     def get_movies_list():
         movies_list = []
         movies = Movies.query.all()
@@ -67,8 +66,8 @@ def create_app(test_config=None):
 
     #  Movies
     @app.route('/all_movies', methods=['GET'])
-    # @requires_auth('get:all_movies')
-    def get_movies():
+    @requires_auth('get:all_movies')
+    def get_movies(payload):
         try:
             movies_list = get_movies_list()
             # movies_list = paginate_items(request,selection)
@@ -110,7 +109,7 @@ def create_app(test_config=None):
             body = request.get_json()
             title_update = body.get('title')
             releaseDate_update = body.get('releaseDate')
-            image_link_update=body.get("image_link")
+            image_link_update = body.get("image_link")
 
             if(title_update):
                 movie.title = title_update
@@ -190,7 +189,7 @@ def create_app(test_config=None):
             body = request.get_json()
             name_update = body.get("name")
             age_update = body.get("Age")
-            image_link_update=body.get("image_link")
+            image_link_update = body.get("image_link")
             movie_update = body.get("movie_id")
 
             if(name_update):
@@ -228,6 +227,41 @@ def create_app(test_config=None):
             })
         except Exception:
             abort(404)
+
+    @app.route('/movie/search', methods=['POST', 'GET'])
+    @requires_auth('get:all_movies')
+    def search_movies(payload):
+        try:
+            body = request.get_json(force=True)
+            search_term = '%{}%'.format(body.get('search_term'))
+            print(search_term)
+            data = []
+            counter = 0
+            found_data = Movies.query.filter(
+                Movies.title.like(f'%{search_term}%')).all()
+            for obj in found_data:
+                counter += 1
+                data.append(obj.movie_dict())
+
+            return jsonify({"success": True, "count": counter, "data": data})
+        except:
+            abort(400)
+            print(sys.exc_info())
+
+    @app.route('/actor/search', methods=['POST', 'GET'])
+    @requires_auth('get:all_actors')
+    def search_actors(payload):
+        body = request.get_json(force=True)
+        search_term = '%{}%'.format(body.get('search_term'))
+        data = []
+        counter = 0
+        found_data = Actors.query.filter(
+            Actors.name.like(f'%{search_term}%')).all()
+        for obj in found_data:
+            counter += 1
+            data.append(obj.actor_dict())
+
+        return jsonify({"success": True, "count": counter, "data": data})
 
     # ERROR HANDLING.
     @app.errorhandler(422)
