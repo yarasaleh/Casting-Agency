@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import datetime
 
-# database_path = 'postgresql://yarasaleh@localhost:5432/agency'
-database_path = 'postgres://kawllcxtaiesjg:61c716b63b42933fb4cc0532a9\
-5f8c36be303a5e86b0bd739743085c20cf9ce9@ec2-3-95-87-221.compute-1.\
-amazonaws.com:5432/dfrem3rdb4t99'
+database_path = 'postgresql://yarasaleh@localhost:5432/agency'
+# database_path = 'postgres://kawllcxtaiesjg:61c716b63b42933fb4cc0532a9\
+# 5f8c36be303a5e86b0bd739743085c20cf9ce9@ec2-3-95-87-221.compute-1.\
+# amazonaws.com:5432/dfrem3rdb4t99'
 db = SQLAlchemy()
 
 '''
