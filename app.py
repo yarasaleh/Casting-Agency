@@ -1,12 +1,14 @@
 # Imports
 import os
-from flask import Flask, request, abort, jsonify
+from flask import Flask, request, abort, jsonify, render_template, Response, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import json
 import sys
 from models import db_drop_and_create_all, setup_db, Movies, Actors
 from auth import AuthError, requires_auth
+from flask_wtf import FlaskForm
+from forms import *
 
 
 def create_app(test_config=None):
@@ -72,7 +74,7 @@ def create_app(test_config=None):
     # ROUTES.
     @app.route('/')
     def index():
-        return 'Hi!!'
+        return render_template('pages/home.html')
 
     #  Movies
     @app.route('/all_movies', methods=['GET'])
@@ -112,7 +114,7 @@ def create_app(test_config=None):
             abort(422)
             print(sys.exc_info())
 
-    @app.route('/movie/<int:id>', methods=['PATCH'])
+    @app.route('/movie/<int:id>/edit', methods=['PATCH'])
     @requires_auth('patch:movie')
     def update_movie(payload, id):
         try:
@@ -194,7 +196,7 @@ def create_app(test_config=None):
         except Exception:
             abort(422)
 
-    @app.route('/actor/<int:id>', methods=['PATCH'])
+    @app.route('/actor/<int:id>/edit', methods=['PATCH'])
     @requires_auth('patch:actor')
     def update_actor(payload, id):
         try:

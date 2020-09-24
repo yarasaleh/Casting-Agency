@@ -1,0 +1,34 @@
+{% extends 'layouts/main.html' %}
+{% block title %}New Actor{% endblock %}
+{% block content %}
+<div class="form-wrapper">
+  <form method="post" class="form">
+    <h3 class="form-heading">List a new Actor</h3>
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{ form.name(class_ = 'form-control', autofocus = true) }}
+    </div>
+    <div class="form-group">
+      <label>Age & Gender</label>
+      <div class="form-inline">
+        <div class="form-group">
+          {{ form.Age(class_ = 'form-control', placeholder='Age', autofocus = true) }}
+        </div>
+        <div class="form-group">
+          {{ form.gender(class_ = 'form-control', placeholder='Gender', autofocus = true) }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="image_link">Image Link</label>
+      {{ form.image_link(class_ = 'form-control', placeholder='http://', autofocus = true) }}
+    </div>
+    <div class="form-group">
+      <label for="movie_id">Genres</label>
+      <small>Ctrl+Click to select multiple</small>
+      {{ form.movie_id(class_ = 'form-control', placeholder='Movies', separated by commas', autofocus = true) }}
+    </div>
+    <input type="submit" value="Create Venue" class="btn btn-primary btn-lg btn-block">
+  </form>
+</div>
+{% endblock %}

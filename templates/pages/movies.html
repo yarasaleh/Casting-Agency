@@ -1,0 +1,16 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Fyyur | Movies{% endblock %}
+{% block content %}
+{% for movie in selection %}
+<ul class="items">
+	<li>
+		<a href="/movie/{{ movie.id }}">
+			<i class="fas fa-music"></i>
+			<div class="item">
+				<h5>{{ movie.title }}</h5>
+			</div>
+		</a>
+	</li>
+</ul>
+{% endfor %}
+{% endblock %}

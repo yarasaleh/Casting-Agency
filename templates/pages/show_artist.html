@@ -1,0 +1,42 @@
+{% extends 'layouts/main.html' %}
+{% block title %}{{ actor.name }} | Actor{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1 class="monospace">
+			{{ actor.name }}
+		</h1>
+		<p class="subtitle">
+			ID: {{ actor.id }}
+		</p>
+		<div class="movies">
+			{% for movie in actor.movie_id %}
+			<span class="genre">{{ movie }}</span>
+			{% endfor %}
+		</div>
+		<p>
+			<i class="fas fa-globe-americas"></i> {{ actor.Age }}, {{ actor.gender }}
+		</p>
+	</div>
+	<div class="col-sm-6">
+		<img src="{{ actor.image_link }}" alt="Actor Image" />
+	</div>
+</div>
+<input type="submit" onclick="editClickHandler(this)" data-id="{{ actor.id }}" value="Edit Actor"
+	class="btn btn-primary btn-lg btn-block" style="width:200px;">
+
+<script>
+	function editClickHandler(e) {
+		console.log("Edit actor: ", e);
+		const actorId = e.dataset.id;
+		fetch('/actor/' + actorId + '/edit', { method: 'GET' })
+			.then(function () {
+				window.location.href = '/actor/' + actorId + '/edit';
+			})
+			.catch(function (e) {
+				console.error(e);
+			})
+
+	}
+</script>
+{% endblock %}

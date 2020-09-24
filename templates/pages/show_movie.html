@@ -1,0 +1,53 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Movie Search{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-sm-6">
+		<h1 class="monospace">
+			{{ movie.title }}
+		</h1>
+		<p class="subtitle">
+			ID: {{ movie.id }}
+		</p>
+		<p>
+			<i class="fas fa-map-marker"></i> {% if movie.releaseDate %}{{ movie.releaseDate }}{% else %}No
+			Date{% endif %}
+		</p>
+		<div class="col-sm-6">
+			<img src="{{ movie.image_link }}" alt="Movie Image" />
+		</div>
+
+	</div>
+
+	<input type="submit" onclick="deleteClickHandler(this)" data-id="{{ movie.id }}" value="Delete Movie"
+		class="btn btn-primary btn-lg btn-block" style="width:200px;">
+	<input type="submit" onclick="editClickHandler(this)" data-id="{{ movie.id }}" value="Edit Movie"
+		class="btn btn-primary btn-lg btn-block" style="width:200px;">
+	<script>
+		function editClickHandler(e) {
+			console.log("Edit movie: ", e);
+			const movieId = e.dataset.id;
+			fetch('/movie/' + movieId + '/edit', { method: 'GET' })
+				.then(function () {
+					window.location.href = '/movie/' + movieId + '/edit';
+				})
+				.catch(function (e) {
+					console.error(e);
+				})
+
+		}
+		function deleteClickHandler(e) {
+			console.log("Delete movie: ", e);
+			const Id = e.dataset.id;
+			fetch('/movie/' + Id, { method: 'DELETE' })
+				.then(function () {
+					window.location.href = '/all_movies';
+				})
+				.catch(function (e) {
+					console.error(e);
+				})
+
+		}
+	</script>
+
+	{% endblock %}
